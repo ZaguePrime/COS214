@@ -20,6 +20,9 @@ private:
     bool checkIfRecordMatch(Record* value, Record* currentElem);
     bool syntaxCheck(std::string query);
 
+    std::string getWord(std::string query);
+    std::string deleteWord(std::string &query);
+
 public:
     Database();
 

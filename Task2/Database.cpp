@@ -185,5 +185,47 @@ void applyChanges(Record *value, Record *currElem)
 
 bool Database::syntaxCheck(std::string query)
 {
-    return false;
+    
+
+
+
+
+    return true;
 }
+
+std::string Database::getWord(std::string query)
+{
+    std::string firstWord = "";
+
+    // Find the position of the first non-space character
+    size_t firstNonSpace = query.find_first_not_of(' ');
+
+    // If there are no non-space characters, the string is empty or contains only spaces
+    if (firstNonSpace != std::string::npos) {
+        // Find the position of the first space after the first non-space character
+        size_t firstSpace = query.find_first_of(' ', firstNonSpace);
+        // Extract the first word using substr
+        firstWord = query.substr(firstNonSpace, firstSpace - firstNonSpace);
+
+    }
+    
+    return firstWord;
+}
+
+
+std::string Database::deleteWord(std::string &query) {
+    // Find the position of the first non-space character
+    size_t firstNonSpace = query.find_first_not_of(' ');
+
+    // If there are no non-space characters, the string is empty or contains only spaces
+    if (firstNonSpace != std::string::npos) {
+        // Find the position of the first space after the first non-space character
+        size_t firstSpace = query.find_first_of(' ', firstNonSpace);
+
+        // Erase the first word and any spaces until the second word
+        query.erase(firstNonSpace, firstSpace - firstNonSpace);
+    }
+
+    return query;
+}
+
