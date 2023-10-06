@@ -5,11 +5,19 @@ int Record::keyCounter = 0;
 
 Record::Record() : key(keyCounter++)
 {
-    // Other attribute initialization if needed
     name = "";
     surname = "";
     value = 0.0;
 }
+
+Record::Record(int key, std::string name, std::string surname, double value)
+{
+    this->key = key;
+    this->name = name;
+    this->surname = surname;
+    this->value = value;
+}
+
 
 int Record::getKey() const
 {
@@ -49,6 +57,10 @@ double Record::getValue() const
 void Record::setValue(double newValue)
 {
     value = newValue;
+}
+
+std::string Record::to_string(){
+    return "{key:"+ std::to_string(key) +" name:"+ name +" surname:"+ surname+" value:"+ std::to_string(value)+"}";
 }
 
 Record::~Record()

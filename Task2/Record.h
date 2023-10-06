@@ -24,7 +24,7 @@ public:
 
 
     Record();
-
+    Record(int key, std::string name, std::string surname, double value);
     int getKey() const;
     void setKey(int newKey);
     const std::string &getName() const;
@@ -35,6 +35,8 @@ public:
     void setValue(double newValue);
 
     bool update();
+    
+    std::string to_string();
 
     ~Record();
 };

@@ -2,6 +2,7 @@
 #define DATABASE_H
 
 #include <vector>
+#include <algorithm>
 #include "Record.h"
 #include "Message.h"
 
@@ -12,9 +13,10 @@ private:
     
     bool insertRecord(Record* value);
     bool deleteRecord(Record* value);
-    std::vector<Record*> selectRecord(Record* value);
+    std::string selectRecord(Record* value);
     bool updateRecord(Record* value);
-
+    void applyUpdate(Record* value, Record* currElem);
+    bool checkIfRecordMatch(Record* value, Record* currentElem);
     bool syntaxCheck(std::string query);
 
 public:
