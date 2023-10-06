@@ -103,20 +103,84 @@ bool Database::updateRecord(Record *value)
 
     for (int i = 0; i < records.size(); i++)
     {
-        if (checkIfRecordMatch(value, records[i]))
+        if(applyUpdate(value, records[i]))
         {
-            records.erase(records.begin() + i);
             updated = true;
         }
     }
 
     return updated;
+}
+
+bool Database::applyUpdate(Record *value, Record *currElem)
+{
+
+    if (value->getKey() != -1)
+    {
+        if (value->getKey() != currElem->getKey())
+        {
+            applyChanges(value, currElem);
+            return true;
+        }
+    }
+
+    if (value->getName() != "")
+    {
+        if (value->getName() != currElem->getName())
+        {
+            applyChanges(value, currElem);
+            return true;
+        }
+    }
+
+    if (value->getSurname() != "")
+    {
+        if (value->getSurname() != currElem->getSurname())
+        {
+            applyChanges(value, currElem);
+            return true;
+        }
+    }
+
+    if (value->getValue() >= 0)
+    {
+        if (value->getValue() - currElem->getValue() > 0.00000001)
+        {
+            applyChanges(value, currElem);
+            return true;
+        }
+    }
     return false;
 }
 
-void Database::applyUpdate(Record *value, Record *currElem)
+void applyChanges(Record *value, Record *currElem)
 {
-    
+    if (value->getName() != "")
+    {
+        if (value->getName() != currElem->getName())
+        {
+            currElem->setName(value->getName());
+            return;
+        }
+    }
+
+    if (value->getSurname() != "")
+    {
+        if (value->getSurname() != currElem->getSurname())
+        {
+            currElem->setSurname(value->getSurname());
+            return;
+        }
+    }
+
+    if (value->getValue() >= 0)
+    {
+        if (value->getValue() - currElem->getValue() > 0.00000001)
+        {
+            currElem->setValue(value->getValue());
+            return;
+        }
+    }
 }
 
 bool Database::syntaxCheck(std::string query)

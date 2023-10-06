@@ -15,7 +15,8 @@ private:
     bool deleteRecord(Record* value);
     std::string selectRecord(Record* value);
     bool updateRecord(Record* value);
-    void applyUpdate(Record* value, Record* currElem);
+    bool applyUpdate(Record* value, Record* currElem);
+    void applyChanges(Record* value, Record* currElem);
     bool checkIfRecordMatch(Record* value, Record* currentElem);
     bool syntaxCheck(std::string query);
 
