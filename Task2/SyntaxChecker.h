@@ -7,7 +7,18 @@
 #include <vector>
 
 
-enum Check;
+    enum Check
+    {
+        OPERATION,
+        FIELDS,
+        FROM,
+        TABLE,
+        WHERE,
+        INTO,
+        SET,
+        FIELD_VALUE,
+        VALUES
+    };
 
 class SyntaxChecker
 {
@@ -31,6 +42,7 @@ private:
     bool checkInto(std::string Word);
     bool checkSet(std::string Word);
     bool checkFieldValue(std::string Word);
+    bool checkFieldValue(std::string Word);
 
     void syntaxCheck(std::string query);
 
@@ -46,23 +58,13 @@ public:
     std::vector<Check> DeleteCheckOrder;
     std::vector<Check> InsertCheckOrder;
 
-    enum Check
-    {
-        OPERATION,
-        FIELDS,
-        FROM,
-        TABLE,
-        WHERE,
-        INTO,
-        SET,
-        FIELD_VALUE
-    };
+
 
     SyntaxChecker();
     ~SyntaxChecker();
 
     Query *getQuery(std::string query);
-    
+    bool hasError(){return this->error;};
 };
 
 #endif

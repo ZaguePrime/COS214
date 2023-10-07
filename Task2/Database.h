@@ -12,11 +12,13 @@ class Database
 {
 private:
     std::vector<Table*> tables;
-    Query* formatQuery(std::string stringQuery);
+    SyntaxChecker checker;
+    
+    int getTableIndex(std::string t);
+
 public:
     Database(/* args */);
-    void addTable(Table* table);
-    void removeTable(std::string name);
+    void addTable(Table* table){tables.push_back(table);};
 
     std::string databaseQuery(std::string query);
 

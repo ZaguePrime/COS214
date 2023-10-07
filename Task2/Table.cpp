@@ -3,19 +3,29 @@
 // public functions
 
 // Constructor
-Table::Table()
+Table::Table(std::string name)
 {
+    this->name = name;
 }
 
-std::string Table::queryHandler(std::string query)
+std::string Table::queryHandler(std::string operation,  Record* record)
 {
-    return "Not implemented";
+    if(operation == "select"){
+        selectRecord(record);
+    } else if(operation == "update") {
+        updateRecord(record);
+    } else if(operation == "delete") {
+        deleteRecord(record);
+    } else if(operation == "insert") {
+        insertRecord(record);
+    }
 }
 
 std::string Table::to_string()
 {
     return "Not implemented";
 }
+
 
 // Destructor
 Table::~Table()
@@ -153,7 +163,7 @@ bool Table::applyUpdate(Record *value, Record *currElem)
     return false;
 }
 
-void applyChanges(Record *value, Record *currElem)
+void Table::applyChanges(Record *value, Record *currElem)
 {
     if (value->getName() != "")
     {

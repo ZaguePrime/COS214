@@ -10,6 +10,7 @@ class Table
 {
 private:
     std::vector<Record*> records;
+    std::string name;
     
     bool insertRecord(Record* value);
     bool deleteRecord(Record* value);
@@ -22,10 +23,10 @@ private:
 
 
 public:
-    Table();
+    Table(std::string name);
 
-    std::string queryHandler(std::string query);
-
+    std::string queryHandler(std::string operation,  Record* record);
+    std::string getName(){return this->name;};
 
     std::string to_string();
 

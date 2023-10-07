@@ -16,7 +16,7 @@ public:
     
     std::string getOperation(){return this->operation;};
     std::string getTable() {return this->table;};
-    Record* getRecord(std::string query);
+    Record* getRecord(){return this->queryObject;};
 
     void setOperation(std::string op){this->operation = op;};
     void setTable(std::string t){this->table = t;};
