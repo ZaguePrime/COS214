@@ -8,14 +8,14 @@ SyntaxChecker::SyntaxChecker()
 
 Query *SyntaxChecker::getQuery(std::string query)
 {
-    error =false;
+    error = false;
     this->query = nullptr;
     this->query = new Query();
     this->query->setRecord(new Record());
 
     syntaxCheck(query);
 
-    if(error)
+    if (error)
     {
         delete this->query;
         return nullptr;
@@ -68,36 +68,37 @@ void SyntaxChecker::checkSelect(std::string &query)
 {
     for (int i = 0; i < SelectCheckOrder.size() && !error; i++)
     {
+        std::string word = getWord(query);
         switch (SelectCheckOrder[i])
         {
         case Check::OPERATION:
-            checkOperation(getWord(query));
+            checkOperation(word);
             break;
 
         case Check::FIELDS:
-            checkFields(getWord(query));
+            checkFields(word);
             break;
         case Check::FROM:
-            checkFrom(getWord(query));
+            checkFrom(word);
             break;
         case Check::TABLE:
-            checkTable(getWord(query));
+            checkTable(word);
 
             break;
         case Check::WHERE:
-            checkWhere(getWord(query));
+            checkWhere(word);
 
             break;
         case Check::INTO:
-            checkInto(getWord(query));
+            checkInto(word);
 
             break;
         case Check::SET:
-            checkSet(getWord(query));
+            checkSet(word);
 
             break;
         case Check::FIELD_VALUE:
-            checkFieldValue(getWord(query));
+            checkFieldValue(word);
 
             break;
         default:
@@ -108,38 +109,40 @@ void SyntaxChecker::checkSelect(std::string &query)
 }
 void SyntaxChecker::checkInsert(std::string &query)
 {
-        for (int i = 0; i < InsertCheckOrder.size() && !error; i++)
+    for (int i = 0; i < InsertCheckOrder.size() && !error; i++)
     {
-        switch (SelectCheckOrder[i])
+        std::string word = getWord(query);
+
+        switch (InsertCheckOrder[i])
         {
         case Check::OPERATION:
-            checkOperation(getWord(query));
+            checkOperation(word);
             break;
 
         case Check::FIELDS:
-            checkFields(getWord(query));
+            checkFields(word);
             break;
         case Check::FROM:
-            checkFrom(getWord(query));
+            checkFrom(word);
             break;
         case Check::TABLE:
-            checkTable(getWord(query));
+            checkTable(word);
 
             break;
         case Check::WHERE:
-            checkWhere(getWord(query));
+            checkWhere(word);
 
             break;
         case Check::INTO:
-            checkInto(getWord(query));
+            checkInto(word);
 
             break;
         case Check::SET:
-            checkSet(getWord(query));
+            checkSet(word);
 
             break;
         case Check::FIELD_VALUE:
-            checkFieldValue(getWord(query));
+            checkFieldValue(word);
 
             break;
         default:
@@ -150,38 +153,40 @@ void SyntaxChecker::checkInsert(std::string &query)
 }
 void SyntaxChecker::checkUpdate(std::string &query)
 {
-        for (int i = 0; i < UpdateCheckOrder.size() && !error; i++)
+    for (int i = 0; i < UpdateCheckOrder.size() && !error; i++)
     {
-        switch (SelectCheckOrder[i])
+        std::string word = getWord(query);
+
+        switch (UpdateCheckOrder[i])
         {
         case Check::OPERATION:
-            checkOperation(getWord(query));
+            checkOperation(word);
             break;
 
         case Check::FIELDS:
-            checkFields(getWord(query));
+            checkFields(word);
             break;
         case Check::FROM:
-            checkFrom(getWord(query));
+            checkFrom(word);
             break;
         case Check::TABLE:
-            checkTable(getWord(query));
+            checkTable(word);
 
             break;
         case Check::WHERE:
-            checkWhere(getWord(query));
+            checkWhere(word);
 
             break;
         case Check::INTO:
-            checkInto(getWord(query));
+            checkInto(word);
 
             break;
         case Check::SET:
-            checkSet(getWord(query));
+            checkSet(word);
 
             break;
         case Check::FIELD_VALUE:
-            checkFieldValue(getWord(query));
+            checkFieldValue(word);
 
             break;
         default:
@@ -192,38 +197,39 @@ void SyntaxChecker::checkUpdate(std::string &query)
 }
 void SyntaxChecker::checkDelete(std::string &query)
 {
-        for (int i = 0; i < DeleteCheckOrder.size() && !error; i++)
+    for (int i = 0; i < DeleteCheckOrder.size() && !error; i++)
     {
-        switch (SelectCheckOrder[i])
+        std::string word = getWord(query);
+        switch (DeleteCheckOrder[i])
         {
         case Check::OPERATION:
-            checkOperation(getWord(query));
+            checkOperation(word);
             break;
 
         case Check::FIELDS:
-            checkFields(getWord(query));
+            checkFields(word);
             break;
         case Check::FROM:
-            checkFrom(getWord(query));
+            checkFrom(word);
             break;
         case Check::TABLE:
-            checkTable(getWord(query));
+            checkTable(word);
 
             break;
         case Check::WHERE:
-            checkWhere(getWord(query));
+            checkWhere(word);
 
             break;
         case Check::INTO:
-            checkInto(getWord(query));
+            checkInto(word);
 
             break;
         case Check::SET:
-            checkSet(getWord(query));
+            checkSet(word);
 
             break;
         case Check::FIELD_VALUE:
-            checkFieldValue(getWord(query));
+            checkFieldValue(word);
 
             break;
         default:
