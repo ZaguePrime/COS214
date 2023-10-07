@@ -1,35 +1,24 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
+#include "Table.h"
+#include "Query.h"
+#include "SyntaxChecker.h"
 #include <vector>
-#include <algorithm>
-#include "Record.h"
-#include "Message.h"
+#include <string>
+
 
 class Database
 {
 private:
-    std::vector<Record*> records;
-    
-    bool insertRecord(Record* value);
-    bool deleteRecord(Record* value);
-    std::string selectRecord(Record* value);
-    bool updateRecord(Record* value);
-    bool applyUpdate(Record* value, Record* currElem);
-    void applyChanges(Record* value, Record* currElem);
-    bool checkIfRecordMatch(Record* value, Record* currentElem);
-    bool syntaxCheck(std::string query);
-
-    std::string getWord(std::string query);
-    std::string deleteWord(std::string &query);
-
+    std::vector<Table*> tables;
+    Query* formatQuery(std::string stringQuery);
 public:
-    Database();
+    Database(/* args */);
+    void addTable(Table* table);
+    void removeTable(std::string name);
 
-    std::string queryHandler(std::string query);
-
-
-    std::string to_string();
+    std::string databaseQuery(std::string query);
 
     ~Database();
 };
