@@ -302,6 +302,26 @@ bool SyntaxChecker::checkOperation(std::string Word)
 
 bool SyntaxChecker::checkFields(std::string Word)
 {
+    if (Word == "key")
+    {
+        this->query->getRecord()->setKey(stoi(Word));
+    }
+    else if (Word == "name")
+    {
+        this->query->getRecord()->setName(Word);
+    }
+    else if (Word == "surname")
+    {
+        this->query->getRecord()->setSurname(Word);
+    }
+    else if (Word == "value")
+    {
+        this->query->getRecord()->setKey(stod(Word));
+    }
+    else if (Word == "*")
+    {
+        this->query->getRecord()->setName(Word);
+    }
 }
 
 bool SyntaxChecker::checkFrom(std::string Word)
@@ -350,4 +370,137 @@ bool SyntaxChecker::checkSet(std::string Word)
 
 bool SyntaxChecker::checkFieldValue(std::string Word)
 {
+    std::string field = extractField(Word);
+    std::string value = extractValue(Word);
+    if (field == "" || value == "")
+    {
+        error = true;
+        return error;
+    }
+    else if (field == "key")
+    {
+        this->query->getRecord()->setKey(stoi(value));
+        this->query->getRecord()->setName(value);
+        this->query->getRecord()->setSurname(value);
+        this->query->getRecord()->setValue(stod(value));
+    }/*
+    else if (field == "name")
+    {
+        this->query->getRecord()->setName(value);
+    }
+    else if (field == "surname")
+    {
+        this->query->getRecord()->setSurname(value);
+    }
+    else if (field == "value")
+    {
+    }*/
+    else
+    {
+        error = true;
+        return error;
+    }
+}
+
+std::string extractValue(const std::string &input)
+{
+    // Find the position of the '=' character
+    size_t equalSignPos = input.find('=');
+
+    // If the '=' character is found, extract the substring after it
+    if (equalSignPos != std::string::npos)
+    {
+        return input.substr(equalSignPos + 1);
+    }
+
+    // If '=' is not found, return an empty string
+    return "";
+}
+
+std::string SyntaxChecker::extractField(const std::string &input)
+{
+    // Find the position of the '=' character
+    size_t equalSignPos = input.find('=');
+
+    // If the '=' character is found, extract the substring before it
+    if (equalSignPos != std::string::npos)
+    {
+        return input.substr(0, equalSignPos);
+    }
+
+    // If '=' is not found, return an empty string
+    return "";
+}
+
+bool SyntaxChecker::checkValues(std::string Word)
+{
+    if (extractWord(Word) != "values")
+    {
+        error = true;
+        return error;
+    }
+
+    std::string params = extractContentInsideParentheses(Word);
+    if (params == "")
+    {
+        true;
+        return error;
+    }
+
+    vector<std::string> splitParams = splitString(params, ',');
+    if (splitParams.size() != 4)
+    {
+        true;
+        return error;
+    }
+
+    this->query->getRecord()->setName(splitParams[1]);
+    this->query->getRecord()->setSurname(splitParams[2]);
+    this->query->getRecord()->setValue(stod(splitParams[3]));
+}
+
+std::string SyntaxChecker::extractWord(const std::string &input)
+{
+    // Find the position of the opening parenthesis
+    size_t pos = input.find('(');
+
+    // If the opening parenthesis is found, extract the word before it
+    if (pos != std::string::npos)
+    {
+        return input.substr(0, pos);
+    }
+
+    // If no opening parenthesis is found, return the entire input string
+    return input;
+}
+
+std::string SyntaxChecker::extractContentInsideParentheses(const std::string &input)
+{
+    // Find the positions of the opening and closing parentheses
+    size_t openParenthesisPos = input.find('(');
+    size_t closeParenthesisPos = input.find(')');
+
+    // If both parentheses are found and the closing parenthesis comes after the opening one
+    if (openParenthesisPos != std::string::npos && closeParenthesisPos != std::string::npos && closeParenthesisPos > openParenthesisPos)
+    {
+        // Extract the content between the parentheses
+        return input.substr(openParenthesisPos + 1, closeParenthesisPos - openParenthesisPos - 1);
+    }
+
+    // If parentheses are not found or in an incorrect order, return an empty string
+    return "";
+}
+
+std::vector<std::string> SyntaxChecker::splitString(const std::string &input, char delimiter)
+{
+    std::istringstream ss(input);
+    std::vector<std::string> tokens;
+    std::string token;
+
+    while (std::getline(ss, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+
+    return tokens;
 }
