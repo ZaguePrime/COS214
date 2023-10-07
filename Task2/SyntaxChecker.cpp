@@ -62,6 +62,11 @@ void SyntaxChecker::syntaxCheck(std::string query)
     {
         this->checkInsert(query);
     }
+    else
+    {
+        return;
+    }
+    std::cout << "made it here" << std::endl;
 }
 
 void SyntaxChecker::checkSelect(std::string &query)
@@ -304,24 +309,31 @@ bool SyntaxChecker::checkFields(std::string Word)
 {
     if (Word == "key")
     {
-        this->query->getRecord()->setKey(stoi(Word));
+        this->query->getRecord()->setName(Word);
+        return error;
     }
     else if (Word == "name")
     {
         this->query->getRecord()->setName(Word);
+        return error;
     }
     else if (Word == "surname")
     {
-        this->query->getRecord()->setSurname(Word);
+        this->query->getRecord()->setName(Word);
+        return error;
     }
     else if (Word == "value")
     {
-        this->query->getRecord()->setKey(stod(Word));
+        this->query->getRecord()->setName(Word);
+        return error;
     }
     else if (Word == "*")
     {
         this->query->getRecord()->setName(Word);
+        return error;
     }
+    error = true;
+    return error;
 }
 
 bool SyntaxChecker::checkFrom(std::string Word)
@@ -383,18 +395,19 @@ bool SyntaxChecker::checkFieldValue(std::string Word)
         this->query->getRecord()->setName(value);
         this->query->getRecord()->setSurname(value);
         this->query->getRecord()->setValue(stod(value));
-    }/*
-    else if (field == "name")
-    {
-        this->query->getRecord()->setName(value);
-    }
-    else if (field == "surname")
-    {
-        this->query->getRecord()->setSurname(value);
-    }
-    else if (field == "value")
-    {
-    }*/
+        return error;
+    } /*
+     else if (field == "name")
+     {
+         this->query->getRecord()->setName(value);
+     }
+     else if (field == "surname")
+     {
+         this->query->getRecord()->setSurname(value);
+     }
+     else if (field == "value")
+     {
+     }*/
     else
     {
         error = true;
@@ -402,7 +415,7 @@ bool SyntaxChecker::checkFieldValue(std::string Word)
     }
 }
 
-std::string extractValue(const std::string &input)
+std::string SyntaxChecker::extractValue(const std::string &input)
 {
     // Find the position of the '=' character
     size_t equalSignPos = input.find('=');
@@ -457,6 +470,7 @@ bool SyntaxChecker::checkValues(std::string Word)
     this->query->getRecord()->setName(splitParams[1]);
     this->query->getRecord()->setSurname(splitParams[2]);
     this->query->getRecord()->setValue(stod(splitParams[3]));
+    return error;
 }
 
 std::string SyntaxChecker::extractWord(const std::string &input)

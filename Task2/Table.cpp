@@ -8,24 +8,31 @@ Table::Table(std::string name)
     this->name = name;
 }
 
-std::string Table::queryHandler(std::string operation,  Record* record)
+std::string Table::queryHandler(std::string operation, Record *record)
 {
-    if(operation == "select"){
-        selectRecord(record);
-    } else if(operation == "update") {
-        updateRecord(record);
-    } else if(operation == "delete") {
-        deleteRecord(record);
-    } else if(operation == "insert") {
-        insertRecord(record);
+    if (operation == "select")
+    {
+        return selectRecord(record);
     }
+    else if (operation == "update")
+    {
+        return std::to_string(updateRecord(record));
+    }
+    else if (operation == "delete")
+    {
+        return std::to_string(deleteRecord(record));
+    }
+    else if (operation == "insert")
+    {
+        return std::to_string(insertRecord(record));
+    }
+    return "fail";
 }
 
 std::string Table::to_string()
 {
     return "Not implemented";
 }
-
 
 // Destructor
 Table::~Table()
@@ -36,6 +43,7 @@ Table::~Table()
 bool Table::insertRecord(Record *value)
 {
     records.push_back(value);
+    return true;
 }
 
 bool Table::deleteRecord(Record *value)
@@ -96,11 +104,56 @@ std::string Table::selectRecord(Record *value)
 
     std::string result;
 
-    for (int i = 0; i < records.size(); i++)
+    if (value->getName() == "*")
     {
-        if (checkIfRecordMatch(value, records[i]))
+        for (int i = 0; i < records.size(); i++)
         {
             result += records[i]->to_string() + "\n";
+        }
+    }
+    else
+    {
+        int index = -1;
+
+        if (value->getName() == "key")
+        {
+            index = 0;
+        }
+        else if (value->getName() == "name")
+        {
+            index = 1;
+        }
+        else if (value->getName() == "surname")
+        {
+            index = 2;
+        }
+        else if (value->getName() == "value")
+        {
+            index = 3;
+        }
+
+        for (int i = 0; i < records.size(); i++)
+        {
+            switch (index)
+            {
+            case 0:
+                result += "{" + std::to_string(records[i]->getKey()) + "}";
+                break;
+
+            case 1:
+                result += "{" + records[i]->getName() + "}";
+
+                break;
+            case 2:
+                result += "{" + records[i]->getSurname() + "}";
+                break;
+            case 3:
+                result += "{" + std::to_string(records[i]->getValue()) + "}";
+
+                break;
+            default:
+                break;
+            }
         }
     }
 
@@ -113,7 +166,7 @@ bool Table::updateRecord(Record *value)
 
     for (int i = 0; i < records.size(); i++)
     {
-        if(applyUpdate(value, records[i]))
+        if (applyUpdate(value, records[i]))
         {
             updated = true;
         }
@@ -195,6 +248,5 @@ void Table::applyChanges(Record *value, Record *currElem)
 
 bool Table::syntaxCheck(std::string query)
 {
-
+    return false;
 }
-

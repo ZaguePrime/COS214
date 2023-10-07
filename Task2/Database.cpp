@@ -3,14 +3,15 @@
 std::string Database::databaseQuery(std::string query)
 {
     Query *q = checker.getQuery(query);
-    if (q != nullptr && !checker.hasError())
+    if (q != nullptr)
     {
         int tIndex = getTableIndex(q->getTable());
         if (tIndex !=-1)
         {
-            tables[tIndex]->queryHandler(q->getOperation(),q->getRecord());
+            return tables[tIndex]->queryHandler(q->getOperation(),q->getRecord());
         }
     }
+    return "fail in database";
 }
 
 Database::Database(/* args */)

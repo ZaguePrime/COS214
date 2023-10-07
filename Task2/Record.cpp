@@ -26,7 +26,7 @@ int Record::getKey() const
 
 void Record::setKey(int newKey)
 {
-    key = newKey;
+    this->key = newKey;
 }
 
 const std::string &Record::getName() const
