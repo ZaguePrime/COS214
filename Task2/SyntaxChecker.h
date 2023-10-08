@@ -18,7 +18,8 @@ enum Check
     INTO,
     SET,
     FIELD_VALUE,
-    VALUES
+    VALUES,
+    INSERT_VALUES
 };
 
 class SyntaxChecker

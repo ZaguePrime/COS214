@@ -12,7 +12,7 @@ class Database
 {
 private:
     std::vector<Table*> tables;
-    SyntaxChecker checker;
+    SyntaxChecker* checker = new SyntaxChecker();
     
     int getTableIndex(std::string t);
 

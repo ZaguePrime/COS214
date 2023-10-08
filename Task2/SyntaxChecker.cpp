@@ -17,6 +17,7 @@ Query *SyntaxChecker::getQuery(std::string query)
 
     if (error)
     {
+        std::cout << "found error" << endl;
         delete this->query;
         return nullptr;
     }
@@ -71,9 +72,12 @@ void SyntaxChecker::syntaxCheck(std::string query)
 
 void SyntaxChecker::checkSelect(std::string &query)
 {
+    std::cout << "=====log=====" << endl;
+
     for (int i = 0; i < SelectCheckOrder.size() && !error; i++)
     {
         std::string word = getWord(query);
+        std::cout << "word: |" << word << endl;
         switch (SelectCheckOrder[i])
         {
         case Check::OPERATION:
@@ -104,19 +108,27 @@ void SyntaxChecker::checkSelect(std::string &query)
             break;
         case Check::FIELD_VALUE:
             checkFieldValue(word);
-
+            break;
+        case Check::INSERT_VALUES:
+            checkValues(word);
             break;
         default:
             error = true;
             return;
         }
+        std::cout << "error: " << this->error << endl;
+        deleteWord(query);
+        std::cout << "=====log=====" << endl;
     }
 }
 void SyntaxChecker::checkInsert(std::string &query)
 {
+    std::cout << "=====log=====" << endl;
+
     for (int i = 0; i < InsertCheckOrder.size() && !error; i++)
     {
         std::string word = getWord(query);
+        std::cout << "word: |" << word << endl;
 
         switch (InsertCheckOrder[i])
         {
@@ -150,17 +162,26 @@ void SyntaxChecker::checkInsert(std::string &query)
             checkFieldValue(word);
 
             break;
+        case Check::INSERT_VALUES:
+            checkValues(word);
+            break;
         default:
             error = true;
             return;
         }
+        std::cout << "error: " << this->error << endl;
+
+        deleteWord(query);
     }
+    std::cout << "=====log=====" << endl;
 }
 void SyntaxChecker::checkUpdate(std::string &query)
 {
+    std::cout << "=====log=====" << endl;
     for (int i = 0; i < UpdateCheckOrder.size() && !error; i++)
     {
         std::string word = getWord(query);
+        std::cout << "word: |" << word << endl;
 
         switch (UpdateCheckOrder[i])
         {
@@ -194,17 +215,27 @@ void SyntaxChecker::checkUpdate(std::string &query)
             checkFieldValue(word);
 
             break;
+        case Check::INSERT_VALUES:
+            checkValues(word);
+            break;
         default:
             error = true;
             return;
         }
+        std::cout << "error: " << this->error << endl;
+
+        deleteWord(query);
     }
+    std::cout << "=====log=====" << endl;
 }
 void SyntaxChecker::checkDelete(std::string &query)
 {
+    std::cout << "=====log=====" << endl;
     for (int i = 0; i < DeleteCheckOrder.size() && !error; i++)
     {
         std::string word = getWord(query);
+        std::cout << "word: |" << word << endl;
+
         switch (DeleteCheckOrder[i])
         {
         case Check::OPERATION:
@@ -237,11 +268,18 @@ void SyntaxChecker::checkDelete(std::string &query)
             checkFieldValue(word);
 
             break;
+        case Check::INSERT_VALUES:
+            checkValues(word);
+            break;
         default:
             error = true;
             return;
         }
+        std::cout << "error: " << this->error << endl;
+
+        deleteWord(query);
     }
+    std::cout << "=====log=====" << endl;
 }
 
 std::string SyntaxChecker::getWord(std::string &query)
@@ -348,6 +386,7 @@ bool SyntaxChecker::checkFrom(std::string Word)
 
 bool SyntaxChecker::checkTable(std::string Word)
 {
+    this->query->setTable(Word);
     return error;
 }
 
@@ -384,35 +423,43 @@ bool SyntaxChecker::checkFieldValue(std::string Word)
 {
     std::string field = extractField(Word);
     std::string value = extractValue(Word);
+    bool flag = false;
+
+    cout << field << "|========|" << value << endl;
     if (field == "" || value == "")
     {
         error = true;
-        return error;
     }
     else if (field == "key")
     {
         this->query->getRecord()->setKey(stoi(value));
+        // this->query->getRecord()->setName(value);
+        // this->query->getRecord()->setSurname(value);
+    }
+    else if (field == "name")
+    {
         this->query->getRecord()->setName(value);
+    }
+    else if (field == "surname")
+    {
         this->query->getRecord()->setSurname(value);
+    }
+    else if (field == "value")
+    {
+        flag = true;
         this->query->getRecord()->setValue(stod(value));
-        return error;
-    } /*
-     else if (field == "name")
-     {
-         this->query->getRecord()->setName(value);
-     }
-     else if (field == "surname")
-     {
-         this->query->getRecord()->setSurname(value);
-     }
-     else if (field == "value")
-     {
-     }*/
+    }
     else
     {
         error = true;
-        return error;
     }
+
+    if (!flag)
+    {
+        this->query->getRecord()->setValue(-1);
+
+    }
+    return error;
 }
 
 std::string SyntaxChecker::extractValue(const std::string &input)

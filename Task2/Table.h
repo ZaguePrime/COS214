@@ -12,8 +12,6 @@ private:
     std::vector<Record*> records;
     std::string name;
     
-    bool insertRecord(Record* value);
-    bool deleteRecord(Record* value);
     std::string selectRecord(Record* value);
     bool updateRecord(Record* value);
     bool applyUpdate(Record* value, Record* currElem);
@@ -24,6 +22,8 @@ private:
 
 public:
     Table(std::string name);
+    bool insertRecord(Record* value);
+    bool deleteRecord(Record* value);
 
     std::string queryHandler(std::string operation,  Record* record);
     std::string getName(){return this->name;};
