@@ -15,7 +15,7 @@ public:
     std::string combineStrings(const std::vector<std::string> &strings);
     std::string databaseQuery(std::string query);
     std::vector<std::string> splitString(const std::string &input, char delimiter);
-    ~NewDatabase();
+    virtual~NewDatabase();
 };
 
 #endif

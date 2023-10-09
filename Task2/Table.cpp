@@ -37,6 +37,11 @@ std::string Table::to_string()
 // Destructor
 Table::~Table()
 {
+    for (int i = 0; i < records.size(); i++)
+    {
+        delete records[i];
+    }
+    records.clear();
 }
 
 // private functions

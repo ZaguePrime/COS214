@@ -8,9 +8,12 @@ std::string Database::databaseQuery(std::string query)
         int tIndex = getTableIndex(q->getTable());
         if (tIndex !=-1)
         {
-            return tables[tIndex]->queryHandler(q->getOperation(),q->getRecord());
+            std::string r = tables[tIndex]->queryHandler(q->getOperation(),q->getRecord());
+            delete q;
+            return r;
         }
     }
+    
     return "fail in database";
 }
 
@@ -58,4 +61,11 @@ int Database::getTableIndex(std::string t)
 
 Database::~Database()
 {
+    delete checker;
+
+    for (int i = 0; i < tables.size(); i++)
+    {
+        delete tables[i];
+    }
+    tables.clear();
 }

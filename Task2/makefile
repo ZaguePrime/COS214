@@ -12,4 +12,4 @@ all:
 	make clean && clear && make run
 
 valgrind:
-	make clean && clear && make && valgrind --leak-check=full --num-callers=5 ./main
+	valgrind --leak-check=full --num-callers=5 ./main

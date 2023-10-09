@@ -21,12 +21,15 @@ Query *SyntaxChecker::getQuery(std::string query)
         delete this->query;
         return nullptr;
     }
-
-    return this->query;
+    Query* temp = this->query;
+    this->query = nullptr;
+    return temp;
 }
 
 SyntaxChecker::~SyntaxChecker()
 {
+    // if(query != nullptr)
+    delete query;
 }
 
 void SyntaxChecker::syntaxCheck(std::string query)

@@ -85,4 +85,5 @@ std::vector<std::string> NewDatabase::splitString(const std::string &input, char
 }
 NewDatabase::~NewDatabase()
 {
+    // delete data;
 }

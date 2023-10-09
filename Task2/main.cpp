@@ -9,7 +9,7 @@ void menu(NewDatabase * ndb, Database* data);
 
 void menu2(NewDatabase * ndb, Database* data)
 {
-    int choice;
+    int choice = 0;
     std::string input;
 
     while (choice != 3 && choice != 2)
@@ -65,7 +65,7 @@ void menu2(NewDatabase * ndb, Database* data)
 
 void menu(NewDatabase * ndb, Database* data)
 {
-    int choice;
+    int choice = 0;
     std::string input;
 
     while (choice != 3 && choice != 2)
@@ -130,5 +130,7 @@ int main()
 
     menu(db, dbs);
 
+    delete db;
+    delete dbs;
     return 0;
 }
