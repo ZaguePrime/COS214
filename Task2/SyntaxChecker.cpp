@@ -67,7 +67,6 @@ void SyntaxChecker::syntaxCheck(std::string query)
     {
         return;
     }
-    std::cout << "made it here" << std::endl;
 }
 
 void SyntaxChecker::checkSelect(std::string &query)
@@ -118,8 +117,8 @@ void SyntaxChecker::checkSelect(std::string &query)
         }
         std::cout << "error: " << this->error << endl;
         deleteWord(query);
-        std::cout << "=====log=====" << endl;
     }
+    std::cout << "=====log=====" << endl;
 }
 void SyntaxChecker::checkInsert(std::string &query)
 {
@@ -285,16 +284,11 @@ void SyntaxChecker::checkDelete(std::string &query)
 std::string SyntaxChecker::getWord(std::string &query)
 {
     std::string firstWord = "";
-
-    // Find the position of the first non-space character
     size_t firstNonSpace = query.find_first_not_of(' ');
 
-    // If there are no non-space characters, the string is empty or contains only spaces
     if (firstNonSpace != std::string::npos)
     {
-        // Find the position of the first space after the first non-space character
         size_t firstSpace = query.find_first_of(' ', firstNonSpace);
-        // Extract the first word using substr
         firstWord = query.substr(firstNonSpace, firstSpace - firstNonSpace);
     }
     return firstWord;
@@ -302,16 +296,11 @@ std::string SyntaxChecker::getWord(std::string &query)
 
 std::string SyntaxChecker::deleteWord(std::string &query)
 {
-    // Find the position of the first non-space character
     size_t firstNonSpace = query.find_first_not_of(' ');
 
-    // If there are no non-space characters, the string is empty or contains only spaces
     if (firstNonSpace != std::string::npos)
     {
-        // Find the position of the first space after the first non-space character
         size_t firstSpace = query.find_first_of(' ', firstNonSpace);
-
-        // Erase the first word and any spaces until the second word
         query.erase(firstNonSpace, firstSpace - firstNonSpace);
     }
 
@@ -425,7 +414,7 @@ bool SyntaxChecker::checkFieldValue(std::string Word)
     std::string value = extractValue(Word);
     bool flag = false;
 
-    cout << field << "|========|" << value << endl;
+    // cout << field << "|========|" << value << endl;
     if (field == "" || value == "")
     {
         error = true;
@@ -433,8 +422,6 @@ bool SyntaxChecker::checkFieldValue(std::string Word)
     else if (field == "key")
     {
         this->query->getRecord()->setKey(stoi(value));
-        // this->query->getRecord()->setName(value);
-        // this->query->getRecord()->setSurname(value);
     }
     else if (field == "name")
     {
@@ -457,38 +444,29 @@ bool SyntaxChecker::checkFieldValue(std::string Word)
     if (!flag)
     {
         this->query->getRecord()->setValue(-1);
-
     }
     return error;
 }
 
 std::string SyntaxChecker::extractValue(const std::string &input)
 {
-    // Find the position of the '=' character
     size_t equalSignPos = input.find('=');
-
-    // If the '=' character is found, extract the substring after it
     if (equalSignPos != std::string::npos)
     {
         return input.substr(equalSignPos + 1);
     }
 
-    // If '=' is not found, return an empty string
     return "";
 }
 
 std::string SyntaxChecker::extractField(const std::string &input)
 {
-    // Find the position of the '=' character
     size_t equalSignPos = input.find('=');
 
-    // If the '=' character is found, extract the substring before it
     if (equalSignPos != std::string::npos)
     {
         return input.substr(0, equalSignPos);
     }
-
-    // If '=' is not found, return an empty string
     return "";
 }
 
@@ -522,33 +500,25 @@ bool SyntaxChecker::checkValues(std::string Word)
 
 std::string SyntaxChecker::extractWord(const std::string &input)
 {
-    // Find the position of the opening parenthesis
     size_t pos = input.find('(');
 
-    // If the opening parenthesis is found, extract the word before it
     if (pos != std::string::npos)
     {
         return input.substr(0, pos);
     }
-
-    // If no opening parenthesis is found, return the entire input string
     return input;
 }
 
 std::string SyntaxChecker::extractContentInsideParentheses(const std::string &input)
 {
-    // Find the positions of the opening and closing parentheses
     size_t openParenthesisPos = input.find('(');
     size_t closeParenthesisPos = input.find(')');
 
-    // If both parentheses are found and the closing parenthesis comes after the opening one
     if (openParenthesisPos != std::string::npos && closeParenthesisPos != std::string::npos && closeParenthesisPos > openParenthesisPos)
     {
-        // Extract the content between the parentheses
         return input.substr(openParenthesisPos + 1, closeParenthesisPos - openParenthesisPos - 1);
     }
 
-    // If parentheses are not found or in an incorrect order, return an empty string
     return "";
 }
 
